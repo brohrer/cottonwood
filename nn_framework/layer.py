@@ -7,9 +7,7 @@ class Dense(object):
         m_inputs,
         n_outputs,
         activate,
-        debug=False,
     ):
-        self.debug = debug
         self.m_inputs = int(m_inputs)
         self.n_outputs = int(n_outputs)
         self.activate = activate
@@ -19,13 +17,15 @@ class Dense(object):
         # Choose random weights.
         # Inputs match to rows. Outputs match to columns.
         # Add one to m_inputs to account for the bias term.
-        # self.initial_weight_scale = 1 / self.m_inputs
-        self.initial_weight_scale = 1
-        self.weights = self.initial_weight_scale * (np.random.sample(
-            size=(self.m_inputs + 1, self.n_outputs)) * 2  - 1)
-        self.w_grad = np.zeros((self.m_inputs + 1, self.n_outputs))
+        self.weights = (np.random.sample(
+            size=(self.m_inputs + 1, self.n_outputs)) * 2 - 1)
         self.x = np.zeros((1, self.m_inputs + 1))
         self.y = np.zeros((1, self.n_outputs))
+
+        self.regularizers = []
+
+    def add_regularizer(self, new_regularizer):
+        self.regularizers.append(new_regularizer)
 
     def forward_prop(self, inputs):
         """
@@ -46,10 +46,15 @@ class Dense(object):
         """
         dy_dv = self.activate.calc_d(self.y)
         # v = self.x @ self.weights
-        # dv_dw = self.x
-        # dv_dx = self.weights
-        dy_dw = self.x.transpose() @ dy_dv
+        dv_dw = self.x.transpose()
+        dv_dx = self.weights.transpose()
+
+        dy_dw = dv_dw @ dy_dv
         de_dw = de_dy * dy_dw
+
         self.weights -= de_dw * self.learning_rate
-        de_dx = (de_dy * dy_dv) @ self.weights.transpose()
+        for regularizer in self.regularizers:
+            self.weights = regularizer.update(self.weights)
+
+        de_dx = (de_dy * dy_dv) @ dv_dx
         return de_dx[:, :-1]

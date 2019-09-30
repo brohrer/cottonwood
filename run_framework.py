@@ -2,7 +2,8 @@ import data_loader_nordic_runes as dat
 import nn_framework.activation as activation
 import nn_framework.framework as framework
 import nn_framework.error_fun as error_fun
-import nn_framework.layer as layer
+from nn_framework.layer import Dense
+from nn_framework.regularization import L1, L2, Limit
 from autoencoder_viz import Printer
 
 N_NODES = [24]
@@ -17,11 +18,15 @@ printer = Printer(input_shape=sample.shape)
 n_nodes = [n_pixels] + N_NODES + [n_pixels]
 model = []
 for i_layer in range(len(n_nodes) - 1):
-    model.append(layer.Dense(
+    new_layer = Dense(
         n_nodes[i_layer],
         n_nodes[i_layer + 1],
-        activation.tanh
-    ))
+        activation.tanh,
+    )
+    new_layer.add_regularizer(L1(2e-5))
+    new_layer.add_regularizer(L2(-1.5e-5))
+    new_layer.add_regularizer(Limit(1.0))
+    model.append(new_layer)
 
 autoencoder = framework.ANN(
     model=model,
