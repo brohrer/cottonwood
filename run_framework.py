@@ -23,9 +23,9 @@ for i_layer in range(len(n_nodes) - 1):
         n_nodes[i_layer + 1],
         activation.tanh,
     )
-    new_layer.add_regularizer(L1(2e-5))
-    new_layer.add_regularizer(L2(-1.5e-5))
-    new_layer.add_regularizer(Limit(1.0))
+    new_layer.add_regularizer(L1())
+    new_layer.add_regularizer(L2())
+    # new_layer.add_regularizer(Limit(1.0))
     model.append(new_layer)
 
 autoencoder = framework.ANN(

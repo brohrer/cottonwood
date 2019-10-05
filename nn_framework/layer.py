@@ -54,7 +54,7 @@ class Dense(object):
 
         self.weights -= de_dw * self.learning_rate
         for regularizer in self.regularizers:
-            self.weights = regularizer.update(self.weights)
+            self.weights = regularizer.update(self)
 
         de_dx = (de_dy * dy_dv) @ dv_dx
         return de_dx[:, :-1]
