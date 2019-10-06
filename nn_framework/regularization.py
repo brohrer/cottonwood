@@ -8,9 +8,9 @@ class L1(object):
     def update(self, layer):
         values = layer.weights
         delta = self.regularization_amount * layer.learning_rate
+        values[np.where(np.abs(values) < delta)] = 0
         values[np.where(values > 0)] -= delta
         values[np.where(values < 0)] += delta
-        values[np.where(np.abs(values) < delta)] = 0
         return values
 
 
