@@ -48,7 +48,7 @@ class ANN(object):
     def evaluate(self, evaluation_set):
         for i_iter in range(self.n_iter_evaluate):
             x = self.normalize(next(evaluation_set()).ravel())
-            y = self.forward_prop(x)
+            y = self.forward_prop(x, evaluating=True)
             error = self.error_fun.calc(x, y)
             self.error_history.append((np.mean(error**2))**.5)
 
@@ -56,11 +56,11 @@ class ANN(object):
                 self.report()
                 self.printer.render(self, x, f"eval_{i_iter + 1:08d}")
 
-    def forward_prop(self, x):
+    def forward_prop(self, x, evaluating=False):
         # Convert the inputs into a 2D array of the right shape.
         y = x.ravel()[np.newaxis, :]
         for layer in self.layers:
-            y = layer.forward_prop(y)
+            y = layer.forward_prop(y, evaluating)
         return y.ravel()
 
     def back_prop(self, de_dy):
