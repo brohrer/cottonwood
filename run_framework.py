@@ -6,7 +6,7 @@ from nn_framework.layer import Dense
 from nn_framework.regularization import L1, L2, Limit
 from autoencoder_viz import Printer
 
-N_NODES = [48]
+N_NODES = [24]
 
 training_set, evaluation_set = dat.get_data_sets()
 
@@ -23,11 +23,11 @@ for i_layer in range(len(n_nodes) - 1):
         n_nodes[i_layer],
         n_nodes[i_layer + 1],
         activation.tanh,
+        dropout_rate=dropout_rates[i_layer],
     )
     # new_layer.add_regularizer(L1())
     # new_layer.add_regularizer(L2())
     new_layer.add_regularizer(Limit(4.0))
-    new_layer.set_dropout_rate(dropout_rates[i_layer])
     model.append(new_layer)
 
 autoencoder = framework.ANN(

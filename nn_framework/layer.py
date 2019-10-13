@@ -7,13 +7,14 @@ class Dense(object):
         m_inputs,
         n_outputs,
         activate,
+        dropout_rate=0,
     ):
         self.m_inputs = int(m_inputs)
         self.n_outputs = int(n_outputs)
         self.activate = activate
+        self.dropout_rate=dropout_rate
 
         self.learning_rate = .001
-        self.dropout_rate = 0
 
         # Choose random weights.
         # Inputs match to rows. Outputs match to columns.
@@ -27,9 +28,6 @@ class Dense(object):
 
     def add_regularizer(self, new_regularizer):
         self.regularizers.append(new_regularizer)
-
-    def set_dropout_rate(self, new_dropout_rate):
-        self.dropout_rate = new_dropout_rate
 
     def forward_prop(self, inputs, evaluating=False):
         """

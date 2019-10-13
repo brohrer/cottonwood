@@ -15,8 +15,8 @@ class ANN(object):
         self.layers = model
         self.error_fun = error_fun
         self.error_history = []
-        self.n_iter_train = int(1e8)
-        self.n_iter_evaluate = int(1e6)
+        self.n_iter_train = int(8e5)
+        self.n_iter_evaluate = int(2e5)
         self.viz_interval = int(1e5)
         self.reporting_bin_size = int(1e3)
         self.report_min = -3
