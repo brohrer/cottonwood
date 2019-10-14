@@ -30,6 +30,8 @@ class Printer(object):
 
         self.n_image_rows = input_shape[0]
         self.n_image_cols = input_shape[1]
+        # Number of layers before the first Dense layer
+        self.i_dense_layer_offset = 1
 
         self.input_image_bottom = 5
         self.input_image_height = 0.25 * self.figure_height
@@ -68,7 +70,7 @@ class Printer(object):
             self.add_node_images(fig, i_viz_layer, image_axes, nn, inputs)
         self.add_output_image(fig, image_axes, nn, inputs)
         self.add_error_image(fig, image_axes, nn, inputs)
-        self.add_layer_connections(ax_boss, image_axes)
+        self.add_layer_connections(ax_boss, image_axes, nn)
         self.save_nn_viz(fig, name)
         plt.close()
 
@@ -96,7 +98,7 @@ class Printer(object):
 
         # The network as a whole
         self.n_nodes = []
-        for layer in nn.layers[1: -1]:
+        for layer in nn.layers[self.i_dense_layer_offset: -1]:
             self.n_nodes.append(layer.m_inputs)
         self.n_nodes.append(layer.n_outputs)
         self.n_viz_layers = len(self.n_nodes)
@@ -147,7 +149,8 @@ class Printer(object):
         # After another tidbit of algebra:
         width_constrained_by_width = (
             total_space_to_fill / (
-               self.n_viz_layers + (self.n_viz_layers + 1) * self.between_layer_scale
+               self.n_viz_layers
+               + (self.n_viz_layers + 1) * self.between_layer_scale
             )
         )
 
@@ -226,7 +229,9 @@ class Printer(object):
         All Axes to be added use the rectangle specification
             (left, bottom, width, height)
         """
-        input_image = inputs.reshape(self.n_image_rows, self.n_image_cols)
+        normalized_inputs = nn.forward_pass(inputs, i_stop_layer=1)
+        input_image = normalized_inputs.reshape(
+                self.n_image_rows, self.n_image_cols)
         absolute_pos = (
             self.left_border,
             self.input_image_bottom,
@@ -246,10 +251,9 @@ class Printer(object):
         """
         Add in all the node images for a single layer
         """
-        # Number of layers before the first Dense layer
-        i_dense_layer_offset = 1
-        i_dense_layer = i_viz_layer + i_dense_layer_offset
-        node_activities = nn.forward_pass(inputs, i_stop_layer=i_dense_layer)
+        i_dense_layer = i_viz_layer + self.i_dense_layer_offset
+        node_activities = nn.forward_pass(
+            inputs, i_stop_layer=i_dense_layer)
         node_image_left = (
             self.left_border
             + self.input_image_width
@@ -264,12 +268,12 @@ class Printer(object):
         layer_bottom = (self.figure_height - total_layer_height) / 2
         layer_axes = []
         for i_node in range(n_nodes):
-            node_signal = np.zeros(n_nodes)
-            node_signal[i_node] = 1
+            node_signal = np.zeros((1, n_nodes))
+            node_signal[0, i_node] = 1
             node_signature = nn.forward_pass(
                 node_signal,
                 i_start_layer=i_dense_layer,
-                i_stop_layer=self.n_viz_layers + i_dense_layer_offset - 1, 
+                i_stop_layer=self.n_viz_layers + self.i_dense_layer_offset - 1,
             )
             node_image = node_signature.reshape(
                 self.n_image_rows, self.n_image_cols)
@@ -296,7 +300,7 @@ class Printer(object):
         image_axes.append(layer_axes)
 
     def add_output_image(self, fig, image_axes, nn, inputs):
-        outputs = nn.forward_pass(inputs)
+        outputs = nn.forward_pass(inputs, i_stop_layer=len(nn.layers) - 1)
         output_image = outputs.reshape(self.n_image_rows, self.n_image_cols)
         output_image_left = (
             self.figure_width
@@ -362,7 +366,7 @@ class Printer(object):
         ax.spines["right"].set_color(self.tan)
         return ax
 
-    def add_layer_connections(self, ax_boss, image_axes):
+    def add_layer_connections(self, ax_boss, image_axes, nn):
         """
         Add in the connectors between all the layers
         Treat the input image as the first layer and
@@ -373,6 +377,15 @@ class Printer(object):
             n_end_nodes = len(image_axes[i_start_layer + 1])
             x_start = image_axes[i_start_layer][0].get_position().x1
             x_end = image_axes[i_start_layer + 1][0].get_position().x0
+
+            i_layer = i_start_layer + self.i_dense_layer_offset - 1
+
+            # For Dense layers that have weights, pull those weights
+            # out for drawing connections.
+            if i_layer > 0 and i_layer < len(nn.layers) - 1:
+                weights = nn.layers[i_layer].weights
+            else:
+                weights = None
 
             for i_start_ax, ax_start in enumerate(image_axes[i_start_layer]):
                 ax_start_pos = ax_start.get_position()
@@ -391,15 +404,20 @@ class Printer(object):
                     # Spread out y_start and y_end a bit
                     y_start = y_start_min + start_spacing * (i_end_ax + 1)
                     y_end = y_end_min + end_spacing * (i_start_ax + 1)
-                    self.plot_connection(
-                        ax_boss, x_start, x_end, y_start, y_end)
 
-    def plot_connection(self, ax_boss, x0, x1, y0, y1):
+                    if weights is not None:
+                        weight = weights[i_start_ax, i_end_ax]
+                    else:
+                        weight = 1
+                    self.plot_connection(
+                        ax_boss, x_start, x_end, y_start, y_end, weight)
+
+    def plot_connection(self, ax_boss, x0, x1, y0, y1, weight=1):
         """
         Represent the weights connecting nodes in one layer
         to nodes in the next.
         """
-        weight = np.random.sample() * 2 - 1
+        # weight = np.random.sample() * 2 - 1
         x = np.linspace(x0, x1, num=50)
         y = y0 + (y1 - y0) * (
             -np.cos(
@@ -409,7 +427,12 @@ class Printer(object):
             conn_color = self.tan
         else:
             conn_color = self.blue
-        ax_boss.plot(x, y, color=conn_color, linewidth=weight)
+        # Limit the magnitude of weights to be 1 or less.
+        if weight > 1:
+            weight = 1
+        if weight < -1:
+            weight = -1
+        ax_boss.plot(x, y, color=conn_color, linewidth=weight, alpha=weight)
 
     def save_nn_viz(self, fig, postfix="0"):
         """

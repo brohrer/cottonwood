@@ -7,7 +7,7 @@ import numpy as np
 class abs(object):
     @staticmethod
     def calc(x):
-        return np.sum(np.abs(x))
+        return np.mean(np.abs(x))
 
     @staticmethod
     def calc_d(x):
@@ -17,7 +17,7 @@ class abs(object):
 class sqr(object):
     @staticmethod
     def calc(x):
-        return np.sum(x**2)
+        return np.mean(x**2)
 
     @staticmethod
     def calc_d(x):

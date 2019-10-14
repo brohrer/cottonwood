@@ -1,7 +1,11 @@
 import numpy as np
 
 
-class Identity(object):
+class GenericLayer(object):
+    """
+    This is a generic layer, but one without any useful function.
+    When you go to write a custom layer, you can use it as a starting point.
+    """
     def __init__(self, previous_layer):
         self.previous_layer = previous_layer
         self.size = self.previous_layer.y.size
@@ -14,15 +18,15 @@ class Identity(object):
         self.de_dy = np.zeros((1, self.size))
 
     def forward_pass(self, **kwargs):
-        self.x = self.previous_layer.y
+        self.x += self.previous_layer.y
         self.y = self.x
 
     def backward_pass(self):
         self.de_dx = self.de_dy
-        self.previous_layer.de_dy = self.de_dx
+        self.previous_layer.de_dy += self.de_dx
 
 
-class Dense(Identity):
+class Dense(GenericLayer):
     def __init__(
         self,
         n_outputs,
@@ -64,7 +68,7 @@ class Dense(Identity):
             Is this part of a training run or an evaluation run?
         """
         if self.previous_layer is not None:
-            self.x = self.previous_layer.y
+            self.x += self.previous_layer.y
         # Apply dropout only during training runs.
         if evaluating:
             dropout_rate = 0
@@ -110,7 +114,7 @@ class Dense(Identity):
         self.previous_layer.de_dy += de_dx_no_bias
 
 
-class RangeNormalization(Identity):
+class RangeNormalization(GenericLayer):
     """
     Transform the input/output values so that they tend to
     fall between -.5 and .5
@@ -134,16 +138,26 @@ class RangeNormalization(Identity):
 
     def forward_pass(self, **kwargs):
         if self.previous_layer is not None:
-            self.x = self.previous_layer.y
+            self.x += self.previous_layer.y
         self.y = (self.x - self.offset_factor) / self.scale_factor - .5
 
     def backward_pass(self):
-        de_dx = self.de_dy / self.scale_factor
+        self.de_dx = self.de_dy / self.scale_factor
         if self.previous_layer is not None:
-            self.previous_layer.de_dy += de_dx
+            self.previous_layer.de_dy += self.de_dx
+
+    def denormalize(self, transformed_values):
+        """
+        In case you ever need to reverse the normalization process.
+        """
+        min_val = self.expected_range[0]
+        max_val = self.expected_range[1]
+        scale_factor = 2 / (max_val - min_val)
+        offset_factor = min_val - 1
+        return transformed_values / scale_factor - offset_factor
 
 
-class Difference(Identity):
+class Difference(GenericLayer):
     """
     A difference layer calculates the difference between the
     outputs of two earlier layers, the previous layer

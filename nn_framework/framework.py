@@ -61,21 +61,37 @@ class ANN(object):
         i_start_layer=None,
         i_stop_layer=None,
     ):
+        """
+        evaluating: boolean
+            Tells whether this is an evaluation
+            (or testing, or validation) run. Some layers behave
+            a bit differently during evaluation
+        i_start_layer, i_stop_layer: int
+            Which layers to include in this forward pass?
+            Uses the python indexing convention - layer[i_stop_layer]
+            is *not* included in the pass.
+            For some purposes, like visualization, it's helpful to
+            inject activities into a layer, or pull them out from
+            a middle layer.
+        """
         if i_start_layer is None:
             i_start_layer = 0
         if i_stop_layer is None:
             i_stop_layer = len(self.layers)
+        # Check for the case in which no layers are included in the range.
+        if i_start_layer >= i_stop_layer:
+            return x
 
+        # Reset all the layers to get them ready for the new iteration.
         for layer in self.layers:
             layer.reset()
 
-        # Convert the inputs into a 2D array of the right shape.
+        # Convert the inputs into a 2D array of the right shape
+        # and increment the inputs of the start layer.
         self.layers[i_start_layer].x += x.ravel()[np.newaxis, :]
 
-        # for i_layer, layer in enumerate(self.layers[i_start_layer: i_stop_layer]):
-        for i_layer, layer in enumerate(self.layers):
+        for layer in self.layers[i_start_layer: i_stop_layer]:
             layer.forward_pass(evaluating=evaluating)
-            print(i_layer, layer.y[:8])
 
         return layer.y.ravel()
 
@@ -84,14 +100,10 @@ class ANN(object):
         for layer in self.layers[::-1]:
             layer.backward_pass()
 
-    def denormalize(self, transformed_values):
-        min_val = self.expected_range[0]
-        max_val = self.expected_range[1]
-        scale_factor = 2 / (max_val - min_val)
-        offset_factor = min_val - 1
-        return transformed_values / scale_factor - offset_factor
-
     def report(self):
+        """
+        Create a plot of the error history.
+        """
         n_bins = int(len(self.error_history) // self.reporting_bin_size)
         smoothed_history = []
         for i_bin in range(n_bins):
