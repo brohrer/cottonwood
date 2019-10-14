@@ -6,19 +6,19 @@ import numpy as np
 
 class abs(object):
     @staticmethod
-    def calc(x, y):
-        return np.abs(y - x)
+    def calc(x):
+        return np.sum(np.abs(x))
 
     @staticmethod
-    def calc_d(x, y):
-        return np.sign(y - x)
+    def calc_d(x):
+        return np.sign(x)
 
 
 class sqr(object):
     @staticmethod
-    def calc(x, y):
-        return (y - x)**2
+    def calc(x):
+        return np.sum(x**2)
 
     @staticmethod
-    def calc_d(x, y):
-        return 2 * (y - x)
+    def calc_d(x):
+        return 2 * x

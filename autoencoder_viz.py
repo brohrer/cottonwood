@@ -64,8 +64,8 @@ class Printer(object):
 
         image_axes = []
         self.add_input_image(fig, image_axes, nn, inputs)
-        for i_layer in range(self.n_layers):
-            self.add_node_images(fig, i_layer, image_axes, nn, inputs)
+        for i_viz_layer in range(self.n_viz_layers):
+            self.add_node_images(fig, i_viz_layer, image_axes, nn, inputs)
         self.add_output_image(fig, image_axes, nn, inputs)
         self.add_error_image(fig, image_axes, nn, inputs)
         self.add_layer_connections(ax_boss, image_axes)
@@ -96,10 +96,10 @@ class Printer(object):
 
         # The network as a whole
         self.n_nodes = []
-        for layer in nn.layers:
+        for layer in nn.layers[1: -1]:
             self.n_nodes.append(layer.m_inputs)
         self.n_nodes.append(layer.n_outputs)
-        self.n_layers = len(self.n_nodes)
+        self.n_viz_layers = len(self.n_nodes)
         self.max_nodes = np.max(self.n_nodes)
 
     def find_node_image_size(self):
@@ -147,7 +147,7 @@ class Printer(object):
         # After another tidbit of algebra:
         width_constrained_by_width = (
             total_space_to_fill / (
-               self.n_layers + (self.n_layers + 1) * self.between_layer_scale
+               self.n_viz_layers + (self.n_viz_layers + 1) * self.between_layer_scale
             )
         )
 
@@ -172,11 +172,11 @@ class Printer(object):
         horizontal_gap_total = (
             self.figure_width
             - 2 * self.input_image_width
-            - self.n_layers * self.node_image_width
+            - self.n_viz_layers * self.node_image_width
             - self.left_border
             - self.right_border
         )
-        n_horizontal_gaps = self.n_layers + 1
+        n_horizontal_gaps = self.n_viz_layers + 1
         self.between_layer_gap = horizontal_gap_total / n_horizontal_gaps
 
     def find_between_node_gap(self):
@@ -242,18 +242,21 @@ class Printer(object):
         )
         image_axes.append([ax_input])
 
-    def add_node_images(self, fig, i_layer, image_axes, nn, inputs):
+    def add_node_images(self, fig, i_viz_layer, image_axes, nn, inputs):
         """
         Add in all the node images for a single layer
         """
-        node_activities = nn.forward_prop_to_layer(inputs, i_layer)
+        # Number of layers before the first Dense layer
+        i_dense_layer_offset = 1
+        i_dense_layer = i_viz_layer + i_dense_layer_offset
+        node_activities = nn.forward_pass(inputs, i_stop_layer=i_dense_layer)
         node_image_left = (
             self.left_border
             + self.input_image_width
-            + i_layer * self.node_image_width
-            + (i_layer + 1) * self.between_layer_gap
+            + i_viz_layer * self.node_image_width
+            + (i_viz_layer + 1) * self.between_layer_gap
         )
-        n_nodes = self.n_nodes[i_layer]
+        n_nodes = self.n_nodes[i_viz_layer]
         total_layer_height = (
             n_nodes * self.node_image_height
             + (n_nodes - 1) * self.between_node_gap
@@ -263,7 +266,11 @@ class Printer(object):
         for i_node in range(n_nodes):
             node_signal = np.zeros(n_nodes)
             node_signal[i_node] = 1
-            node_signature = nn.forward_prop_from_layer(node_signal, i_layer)
+            node_signature = nn.forward_pass(
+                node_signal,
+                i_start_layer=i_dense_layer,
+                i_stop_layer=self.n_viz_layers + i_dense_layer_offset - 1, 
+            )
             node_image = node_signature.reshape(
                 self.n_image_rows, self.n_image_cols)
             node_image *= node_activities[i_node]
@@ -289,7 +296,7 @@ class Printer(object):
         image_axes.append(layer_axes)
 
     def add_output_image(self, fig, image_axes, nn, inputs):
-        outputs = nn.forward_prop(inputs)
+        outputs = nn.forward_pass(inputs)
         output_image = outputs.reshape(self.n_image_rows, self.n_image_cols)
         output_image_left = (
             self.figure_width
@@ -312,9 +319,8 @@ class Printer(object):
         image_axes.append([ax_output])
 
     def add_error_image(self, fig, image_axes, nn, inputs):
-        outputs = nn.forward_prop(inputs)
-        errors = inputs - outputs
-        error_image = errors.reshape(self.n_image_rows, self.n_image_cols)
+        outputs = nn.forward_pass(inputs)
+        error_image = outputs.reshape(self.n_image_rows, self.n_image_cols)
         absolute_pos = (
             self.error_image_left,
             self.error_image_bottom,

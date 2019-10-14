@@ -10,7 +10,6 @@ class ANN(object):
         model=None,
         error_fun=None,
         printer=None,
-        expected_range=(-1, 1),
     ):
         self.layers = model
         self.error_fun = error_fun
@@ -22,7 +21,6 @@ class ANN(object):
         self.report_min = -3
         self.report_max = 0
         self.printer = printer
-        self.expected_range = expected_range
 
         self.reports_path = "reports"
         self.report_name = "performance_history.png"
@@ -34,12 +32,12 @@ class ANN(object):
 
     def train(self, training_set):
         for i_iter in range(self.n_iter_train):
-            x = self.normalize(next(training_set()).ravel())
-            y = self.forward_prop(x)
-            error = self.error_fun.calc(x, y)
-            error_d = self.error_fun.calc_d(x, y)
-            self.error_history.append((np.mean(error**2))**.5)
-            self.back_prop(error_d)
+            x = next(training_set()).ravel()
+            y = self.forward_pass(x)
+            error = self.error_fun.calc(y)
+            error_d = self.error_fun.calc_d(y)
+            self.error_history.append(error)
+            self.backward_pass(error_d)
 
             if (i_iter + 1) % self.viz_interval == 0:
                 self.report()
@@ -47,49 +45,44 @@ class ANN(object):
 
     def evaluate(self, evaluation_set):
         for i_iter in range(self.n_iter_evaluate):
-            x = self.normalize(next(evaluation_set()).ravel())
-            y = self.forward_prop(x, evaluating=True)
-            error = self.error_fun.calc(x, y)
-            self.error_history.append((np.mean(error**2))**.5)
+            x = next(evaluation_set()).ravel()
+            y = self.forward_pass(x, evaluating=True)
+            error = self.error_fun.calc(y)
+            self.error_history.append(error)
 
             if (i_iter + 1) % self.viz_interval == 0:
                 self.report()
                 self.printer.render(self, x, f"eval_{i_iter + 1:08d}")
 
-    def forward_prop(self, x, evaluating=False):
-        # Convert the inputs into a 2D array of the right shape.
-        y = x.ravel()[np.newaxis, :]
+    def forward_pass(
+        self,
+        x,
+        evaluating=False,
+        i_start_layer=None,
+        i_stop_layer=None,
+    ):
+        if i_start_layer is None:
+            i_start_layer = 0
+        if i_stop_layer is None:
+            i_stop_layer = len(self.layers)
+
         for layer in self.layers:
-            y = layer.forward_prop(y, evaluating)
-        return y.ravel()
+            layer.reset()
 
-    def back_prop(self, de_dy):
-        for i_layer, layer in enumerate(self.layers[::-1]):
-            de_dx = layer.back_prop(de_dy)
-            de_dy = de_dx
+        # Convert the inputs into a 2D array of the right shape.
+        self.layers[i_start_layer].x += x.ravel()[np.newaxis, :]
 
-    def forward_prop_to_layer(self, x, i_layer):
-        y = x.ravel()[np.newaxis, :]
-        for layer in self.layers[:i_layer]:
-            y = layer.forward_prop(y)
-        return y.ravel()
+        # for i_layer, layer in enumerate(self.layers[i_start_layer: i_stop_layer]):
+        for i_layer, layer in enumerate(self.layers):
+            layer.forward_pass(evaluating=evaluating)
+            print(i_layer, layer.y[:8])
 
-    def forward_prop_from_layer(self, x, i_layer):
-        y = x.ravel()[np.newaxis, :]
-        for layer in self.layers[i_layer:]:
-            y = layer.forward_prop(y)
-        return y.ravel()
+        return layer.y.ravel()
 
-    def normalize(self, values):
-        """
-        Transform the input/output values so that they tend to
-        fall between -.5 and .5
-        """
-        min_val = self.expected_range[0]
-        max_val = self.expected_range[1]
-        scale_factor = max_val - min_val
-        offset_factor = min_val
-        return (values - offset_factor) / scale_factor - .5
+    def backward_pass(self, de_dy):
+        self.layers[-1].de_dy += de_dy
+        for layer in self.layers[::-1]:
+            layer.backward_pass()
 
     def denormalize(self, transformed_values):
         min_val = self.expected_range[0]
