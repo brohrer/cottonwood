@@ -11,17 +11,59 @@ This code is always evolving. I recommend referencing a specific tag
 whenever you use it in a project. Tags are labeled v1, v2, etc. and
 the code attached to each one won't change.
 
+If you want to follow along with the construction process for Cottonwood,
+you can get a step-by-step walkthrough in End-to-End Machine Learning
+[Course 312](https://end-to-end-machine-learning.teachable.com/p/write-a-neural-network-framework/)
+and
+[Course 313](https://end-to-end-machine-learning.teachable.com/p/advanced-neural-network-methods/)
+
 ## Try it out
 
-
+```bash
+git clone https://github.com/brohrer/cottonwood.git
+cd cottonwood
+python3 run_framework.py
+```
 
 ## Revision history
 
-### **v1**, initial state
+### v4
+
+Custom layers added
+as detailed in section 3 of
+[Course 313](https://end-to-end-machine-learning.teachable.com/p/advanced-neural-network-methods/).
+
+#### Features
+* Normalization layer
+* Difference layer
+* Directed acyclic graph architectures
+* Input value range inferred automatically
+
+#### Bugfixes
+* Error functions take single array as input, return single value.
+* Connections in autoencoder visualization reflect connection weights
+
+### v3
+
+Dropout added
+as detailed in section 2 of
+[Course 313](https://end-to-end-machine-learning.teachable.com/p/advanced-neural-network-methods/).
+
+#### Features
+* Dropout
+
+### v2
+
+Regularization added, as detailed in section 1 of
+[Course 313](https://end-to-end-machine-learning.teachable.com/p/advanced-neural-network-methods/).
+
+#### Features
+* **Regularizers** L1, L2, and Limit (max-norm)
+
+### v1
 
 The initial state of the code, as built in
-[End-to-End Machine Learning Course 312](https://end-to-end-machine-learning.teachable.com/p/write-a-neural-network-framework/).
-The entry point is `python3 run_framework.py`.
+[Course 312](https://end-to-end-machine-learning.teachable.com/p/write-a-neural-network-framework/)
 
 #### Features
 * Fully-connected layers
