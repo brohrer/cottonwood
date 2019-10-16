@@ -11,8 +11,11 @@ class Printer(object):
     def __init__(self, input_shape=None):
 
         # Choose a color palette
-        self.blue = "#04253a"
-        self.green = "#4c837a"
+        # self.blue = "#04253a"
+        self.blue = "#1da3f7"  # light blue
+        # self.green = "#4c837a"
+        self.green = "#13b59a"  # light green
+        self.black = "#000003"
         self.tan = "#e1ddbf"
         self.cmap = "bone"
         self.error_cmap = "RdGy"
@@ -77,7 +80,8 @@ class Printer(object):
     def create_background(self):
         fig = plt.figure(
             edgecolor=self.tan,
-            facecolor=self.green,
+            facecolor=self.black,
+            # facecolor=self.green,
             figsize=(self.figure_width, self.figure_height),
             linewidth=4,
         )
@@ -408,7 +412,7 @@ class Printer(object):
                     if weights is not None:
                         weight = weights[i_start_ax, i_end_ax]
                     else:
-                        weight = 1
+                        weight = .5
                     self.plot_connection(
                         ax_boss, x_start, x_end, y_start, y_end, weight)
 
