@@ -13,7 +13,7 @@ class tanh(object):
         return 1 - np.tanh(v) ** 2
 
 
-def logistic(v):
+class logistic(object):
     @staticmethod
     def calc(v):
         return 1 / (1 + np.exp(-v))
@@ -23,7 +23,7 @@ def logistic(v):
         return calc(v) * (1 - calc(v))
 
 
-def relu(v):
+class relu(object):
     @staticmethod
     def calc(v):
         return np.maximum(0, v)
