@@ -14,13 +14,11 @@ class tanh(object):
 
 
 class logistic(object):
-    @staticmethod
-    def calc(v):
+    def calc(self, v):
         return 1 / (1 + np.exp(-v))
 
-    @staticmethod
-    def calc_d(v):
-        return calc(v) * (1 - calc(v))
+    def calc_d(self, v):
+        return self.calc(v) * (1 - self.calc(v))
 
 
 class relu(object):

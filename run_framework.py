@@ -3,7 +3,9 @@ import data_loader_nordic_runes as dat
 import nn_framework.activation as activation
 import nn_framework.framework as framework
 import nn_framework.error_fun as error_fun
-import nn_framework.layer as layer
+from nn_framework.layers.dense import Dense
+from nn_framework.layers.range_normalization import RangeNormalization
+from nn_framework.layers.difference import Difference
 from nn_framework.regularization import L1, L2, Limit
 from autoencoder_viz import Printer
 
@@ -19,10 +21,10 @@ n_nodes = N_NODES + [n_pixels]
 # dropout_rates = [.2, .5]
 model = []
 
-model.append(layer.RangeNormalization(training_set))
+model.append(RangeNormalization(training_set))
 
 for i_layer in range(len(n_nodes)):
-    new_layer = layer.Dense(
+    new_layer = Dense(
         n_nodes[i_layer],
         activation.tanh,
         previous_layer=model[-1],
@@ -33,7 +35,7 @@ for i_layer in range(len(n_nodes)):
     new_layer.add_regularizer(Limit(4.0))
     model.append(new_layer)
 
-model.append(layer.Difference(model[-1], model[0]))
+model.append(Difference(model[-1], model[0]))
 
 autoencoder = framework.ANN(
     model=model,
