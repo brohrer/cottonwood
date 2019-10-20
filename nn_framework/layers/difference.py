@@ -1,3 +1,4 @@
+from generic_layer import GenericLayer
 from nn_framework.layers.generic_layer import GenericLayer
 
 
