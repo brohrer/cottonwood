@@ -66,6 +66,7 @@ class Momentum(GenericOptimizer):
     (8 October 1986). "Learning representations by back-propagating errors".
     Nature. 323 (6088): 533–536.
     Bibcode:1986Natur.323..533R. doi:10.1038/323533a0.
+    http://www.cs.toronto.edu/~hinton/absps/naturebp.pdf
     """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

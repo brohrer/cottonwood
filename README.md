@@ -25,6 +25,24 @@ python3 cottonwood/demo.py
 
 ## Revision history
 
+### v5
+
+Optimizers added
+as detailed in section 4 of
+[Course 313](https://end-to-end-machine-learning.teachable.com/p/advanced-neural-network-methods/).
+
+#### Features
+* Stochastic Gradient Descent (SGD)
+* SGD with momentum
+* Adam
+* Noisy momentum (experimental)
+
+#### Refactoring
+* Creation of `data`, `examples`, and `experimental` directories.
+* Variable, class, and module name changes throughout to better reflect
+their purpose.
+* Regularizers' function broken out into pre- and post-optimizer.
+
 ### v4
 
 Custom layers added

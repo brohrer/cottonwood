@@ -1,7 +1,7 @@
 import numpy as np
 import data.data_loader_nordic_runes as dat
 import core.activation as activation
-import core.framework as framework
+from core.model import ANN
 import core.error_fun as error_fun
 from core.layers.dense import Dense
 from core.layers.range_normalization import RangeNormalization
@@ -26,30 +26,30 @@ printer = Printer(input_shape=sample.shape)
 N_NODES = [24]
 n_nodes = N_NODES + [n_pixels]
 # dropout_rates = [.2, .5]
-model = []
+layers = []
 
-model.append(RangeNormalization(training_set))
+layers.append(RangeNormalization(training_set))
 
 for i_layer in range(len(n_nodes)):
     new_layer = Dense(
         n_nodes[i_layer],
         activation.tanh,
-        previous_layer=model[-1],
+        previous_layer=layers[-1],
         # dropout_rate=dropout_rates[i_layer],
         # optimizer=SGD(),
-        # optimizer=Momentum(),
-        optimizer=NoisyMomentum(),
+        optimizer=Momentum(),
+        # optimizer=NoisyMomentum(),
         # optimizer=Adam(),
     )
     new_layer.add_regularizer(L1())
     # new_layer.add_regularizer(L2())
     new_layer.add_regularizer(Limit(4.0))
-    model.append(new_layer)
+    layers.append(new_layer)
 
-model.append(Difference(model[-1], model[0]))
+layers.append(Difference(layers[-1], layers[0]))
 
-autoencoder = framework.ANN(
-    model=model,
+autoencoder = ANN(
+    layers=layers,
     error_fun=error_fun.sqr,
     printer=printer,
 )
