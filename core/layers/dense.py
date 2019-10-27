@@ -8,8 +8,8 @@ class Dense(GenericLayer):
         self,
         n_outputs,
         activation_function,
-        previous_layer=None,
         dropout_rate=0,
+        previous_layer=None,
         optimizer=None,
     ):
         self.previous_layer = previous_layer

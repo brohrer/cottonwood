@@ -1,10 +1,10 @@
-# The Cottonwood Neural Network Framework
+# The Cottonwood Machine Learning Framework
 
 Cottonwood is built to as flexible as possible, top to bottom.
 It's designed to minimize the iteration time when running experiments
 and testing ideas. It's meant to be tweaked. Fork it. Add to it. Customize it
 to solve the problem at hand.
-[Why another neural network framework?](https://end-to-end-machine-learning.teachable.com/blog/171633/cottonwood-flexible-neural-network-framework)
+[Why another framework?](https://end-to-end-machine-learning.teachable.com/blog/171633/cottonwood-flexible-neural-network-framework)
 
 This code is always evolving. I recommend referencing a specific tag
 whenever you use it in a project. Tags are labeled v1, v2, etc. and
