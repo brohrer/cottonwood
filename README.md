@@ -21,7 +21,7 @@ and
 ```bash
 git clone https://github.com/brohrer/cottonwood.git
 cd cottonwood
-python3 run_framework.py
+python3 demo.py
 ```
 
 ## Revision history

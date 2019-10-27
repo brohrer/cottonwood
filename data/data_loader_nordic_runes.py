@@ -1,5 +1,5 @@
 import numpy as np
-import elder_futhark as ef
+import data.elder_futhark as ef
 
 
 def get_data_sets():

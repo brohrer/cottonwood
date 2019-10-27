@@ -1,5 +1,6 @@
 import numpy as np
-from nn_framework.layers.generic_layer import GenericLayer
+from core.layers.generic_layer import GenericLayer
+from core.optimizers import SGD
 
 
 class Dense(GenericLayer):
@@ -9,14 +10,17 @@ class Dense(GenericLayer):
         activation_function,
         previous_layer=None,
         dropout_rate=0,
+        optimizer=None,
     ):
         self.previous_layer = previous_layer
         self.m_inputs = self.previous_layer.y.size
         self.n_outputs = int(n_outputs)
         self.activation_function = activation_function
         self.dropout_rate = dropout_rate
-
-        self.learning_rate = .001
+        if optimizer is None:
+            self.optimizer = SGD(learning_rate=.001)
+        else:
+            self.optimizer = optimizer
 
         # Choose random weights.
         # Inputs match to rows. Outputs match to columns.
@@ -75,11 +79,15 @@ class Dense(GenericLayer):
         dv_dx = self.weights.transpose()
 
         dy_dw = dv_dw @ dy_dv
-        de_dw = self.de_dy * dy_dw
+        self.de_dw = self.de_dy * dy_dw
 
-        self.weights -= de_dw * self.learning_rate
         for regularizer in self.regularizers:
-            self.weights = regularizer.update(self)
+            regularizer.pre_optim_update(self)
+
+        self.optimizer.update(self)
+
+        for regularizer in self.regularizers:
+            regularizer.post_optim_update(self)
 
         self.de_dx = (self.de_dy * dy_dv) @ dv_dx
         # Remove the dropped-out inputs from this run.

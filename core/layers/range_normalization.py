@@ -1,5 +1,5 @@
 import numpy as np
-from nn_framework.layers.generic_layer import GenericLayer
+from core.layers.generic_layer import GenericLayer
 
 
 class RangeNormalization(GenericLayer):
