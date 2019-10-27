@@ -6,9 +6,10 @@ import core.error_fun as error_fun
 from core.layers.dense import Dense
 from core.layers.range_normalization import RangeNormalization
 from core.layers.difference import Difference
-from core.optimizers import SGD, Momentum, Adam, NoisyMomentum
+from core.optimizers import SGD, Momentum, Adam
 from core.regularization import L1, Limit
 from examples.autoencoder.autoencoder_viz import Printer
+from experimental.optimizers.noisy_momentum import NoisyMomentum
 
 print("")
 print("Running autoencoder demo on Nordic Runes data set.")
@@ -36,8 +37,8 @@ for i_layer in range(len(n_nodes)):
         previous_layer=model[-1],
         # dropout_rate=dropout_rates[i_layer],
         # optimizer=SGD(),
-        optimizer=Momentum(),
-        # optimizer=NoisyMomentum(),
+        # optimizer=Momentum(),
+        optimizer=NoisyMomentum(),
         # optimizer=Adam(),
     )
     new_layer.add_regularizer(L1())

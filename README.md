@@ -20,8 +20,7 @@ and
 
 ```bash
 git clone https://github.com/brohrer/cottonwood.git
-cd cottonwood
-python3 demo.py
+python3 cottonwood/demo.py
 ```
 
 ## Revision history
