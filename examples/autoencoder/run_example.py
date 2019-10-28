@@ -42,7 +42,6 @@ for i_layer in range(len(n_nodes)):
         optimizer=Momentum(),
     )
     new_layer.add_regularizer(L1())
-    # new_layer.add_regularizer(L2())
     new_layer.add_regularizer(Limit(4.0))
     layers.append(new_layer)
 

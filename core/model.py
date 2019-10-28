@@ -59,7 +59,7 @@ class ANN(object):
                 self.report()
                 if self.printer is not None:
                     self.printer.render(
-                        self, x, f"eval_{self.i_iter + 1:08d}")
+                        self, x, f"eval_{self.i_iter:08d}")
 
     def forward_pass(
         self,

@@ -19,11 +19,22 @@ and
 ## Try it out
 
 ```bash
-git clone https://github.com/brohrer/cottonwood.git
+git clone --branch v5 https://github.com/brohrer/cottonwood.git
 python3 cottonwood/demo.py
 ```
 
 ## Revision history
+
+### v6
+
+Initializers added
+as detailed in section 5 of
+[Course 313](https://end-to-end-machine-learning.teachable.com/p/advanced-neural-network-methods/).
+
+#### Features
+* Glorot initialization
+* He initialization
+* Uniform initialization
 
 ### v5
 
