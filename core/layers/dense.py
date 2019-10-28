@@ -1,4 +1,5 @@
 import numpy as np
+from core.initializers import Glorot
 from core.layers.generic_layer import GenericLayer
 from core.optimizers import SGD
 
@@ -9,6 +10,7 @@ class Dense(GenericLayer):
         n_outputs,
         activation_function,
         dropout_rate=0,
+        initializer=None,
         previous_layer=None,
         optimizer=None,
     ):
@@ -17,16 +19,20 @@ class Dense(GenericLayer):
         self.n_outputs = int(n_outputs)
         self.activation_function = activation_function
         self.dropout_rate = dropout_rate
+
+        if initializer is None:
+            initializer = Glorot()
+
         if optimizer is None:
-            self.optimizer = SGD(learning_rate=.001)
+            self.optimizer = SGD()
         else:
             self.optimizer = optimizer
 
         # Choose random weights.
         # Inputs match to rows. Outputs match to columns.
         # Add one to m_inputs to account for the bias term.
-        self.weights = (np.random.sample(
-            size=(self.m_inputs + 1, self.n_outputs)) * 2 - 1)
+        self.weights = initializer.initialize(
+            self.m_inputs + 1, self.n_outputs)
 
         self.reset()
         self.regularizers = []
