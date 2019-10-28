@@ -19,7 +19,7 @@ and
 ## Try it out
 
 ```bash
-git clone https://github.com/brohrer/cottonwood.git
+git clone --branch v5 https://github.com/brohrer/cottonwood.git
 python3 cottonwood/demo.py
 ```
 
