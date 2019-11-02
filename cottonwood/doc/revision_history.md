@@ -1,5 +1,17 @@
 ## Cottonwood revision history
 
+### v7
+
+Reporting added 
+as detailed in section 6 of
+[Course 313](https://end-to-end-machine-learning.teachable.com/p/advanced-neural-network-methods/).
+
+#### Features
+* `__str__()` methods added to all core classes
+* String representations of components combined together in a model report
+* Widespread refactoring 
+* Added to PyPi
+
 ### v6
 
 Initializers added
