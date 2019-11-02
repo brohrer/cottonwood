@@ -3,7 +3,8 @@
 Cottonwood is built to as flexible as possible, top to bottom.
 It's designed to minimize the iteration time when running experiments
 and testing ideas. It's meant to be tweaked. Fork it. Add to it. Customize it
-to solve the problem at hand.
+to solve the problem at hand. For more of the thought behind it, read
+the post "
 [Why another framework?](https://end-to-end-machine-learning.teachable.com/blog/171633/cottonwood-flexible-neural-network-framework)
 
 This code is always evolving. I recommend referencing a specific tag
@@ -19,8 +20,11 @@ and
 ## Try it out
 
 ```bash
-git clone --branch v6 https://github.com/brohrer/cottonwood.git
-python3 cottonwood/demo.py
+python3 -m pip install "cottonwood==7"
+python3
+```
+```python3
+>>> import cottonwood.demo
 ```
 
 ## [Revision history](doc/revision_history.md)
