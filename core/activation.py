@@ -3,7 +3,11 @@ import numpy as np
 # All of these need to be able to handle 2D numpy arrays as inputs.
 
 
-class tanh(object):
+class Tanh(object):
+    @staticmethod
+    def __str__():
+        return "hyperbolic tangent"
+
     @staticmethod
     def calc(v):
         return np.tanh(v)
@@ -13,7 +17,11 @@ class tanh(object):
         return 1 - np.tanh(v) ** 2
 
 
-class logistic(object):
+class Logistic(object):
+    @staticmethod
+    def __str__():
+        return "logistic"
+
     def calc(self, v):
         return 1 / (1 + np.exp(-v))
 
@@ -21,7 +29,11 @@ class logistic(object):
         return self.calc(v) * (1 - self.calc(v))
 
 
-class relu(object):
+class ReLU(object):
+    @staticmethod
+    def __str__():
+        return "ReLU"
+
     @staticmethod
     def calc(v):
         return np.maximum(0, v)

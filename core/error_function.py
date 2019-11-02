@@ -4,7 +4,11 @@ import numpy as np
 # and return the same size error output.
 
 
-class abs(object):
+class Abs(object):
+    @staticmethod
+    def __str__():
+        return "mean absolute error"
+
     @staticmethod
     def calc(x):
         return np.mean(np.abs(x))
@@ -14,7 +18,11 @@ class abs(object):
         return np.sign(x)
 
 
-class sqr(object):
+class Sqr(object):
+    @staticmethod
+    def __str__():
+        return "mean squared error"
+
     @staticmethod
     def calc(x):
         return np.mean(x**2)

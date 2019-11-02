@@ -14,7 +14,7 @@ class RangeNormalization(GenericLayer):
         self.range_min = 1e10
         self.range_max = -1e10
         for _ in range(n_range_test):
-            sample = next(training_data())
+            sample = next(training_data)
             if self.range_min > np.min(sample):
                 self.range_min = np.min(sample)
             if self.range_max < np.max(sample):
@@ -23,6 +23,14 @@ class RangeNormalization(GenericLayer):
         self.offset_factor = self.range_min
         self.size = sample.size
         self.reset()
+
+    def __str__(self):
+        str_parts = [
+            "range normalization",
+            f"range maximum: {self.range_max}",
+            f"range minimum: {self.range_min}",
+        ]
+        return "\n".join(str_parts)
 
     def forward_pass(self, **kwargs):
         if self.previous_layer is not None:

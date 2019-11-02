@@ -1,14 +1,16 @@
 import numpy as np
+from core.activation import Tanh
 from core.initializers import Glorot
 from core.layers.generic_layer import GenericLayer
 from core.optimizers import SGD
+import core.toolbox as tb
 
 
 class Dense(GenericLayer):
     def __init__(
         self,
         n_outputs,
-        activation_function,
+        activation_function=None,
         dropout_rate=0,
         initializer=None,
         previous_layer=None,
@@ -20,8 +22,15 @@ class Dense(GenericLayer):
         self.activation_function = activation_function
         self.dropout_rate = dropout_rate
 
+        if activation_function is None:
+            self.activation_function = Tanh()
+        else:
+            self.activation_function = activation_function
+
         if initializer is None:
-            initializer = Glorot()
+            self.initializer = Glorot()
+        else:
+            self.initializer = initializer
 
         if optimizer is None:
             self.optimizer = SGD()
@@ -31,11 +40,29 @@ class Dense(GenericLayer):
         # Choose random weights.
         # Inputs match to rows. Outputs match to columns.
         # Add one to m_inputs to account for the bias term.
-        self.weights = initializer.initialize(
+        self.weights = self.initializer.initialize(
             self.m_inputs + 1, self.n_outputs)
 
         self.reset()
         self.regularizers = []
+
+    def __str__(self):
+        """
+        Make a descriptive, human-readable string for this layer.
+        """
+        str_parts = [
+            "fully connected",
+            f"number of inputs: {self.m_inputs}",
+            f"number of outputs: {self.n_outputs}",
+            "activation function:" + tb.indent(
+                self.activation_function.__str__()),
+            "initialization:" + tb.indent(self.initializer.__str__()),
+            "optimizer:" + tb.indent(self.optimizer.__str__()),
+        ]
+        for regularizer in self.regularizers:
+            str_parts.append(
+                "regularizer:" + tb.indent(regularizer.__str__()))
+        return "\n".join(str_parts)
 
     def add_regularizer(self, new_regularizer):
         self.regularizers.append(new_regularizer)

@@ -16,6 +16,9 @@ class Difference(GenericLayer):
 
         self.size = self.previous_layer.y.size
 
+    def __str__(self):
+        return "difference"
+
     def forward_pass(self, **kwargs):
         self.y = self.previous_layer.y - self.subtract_me_layer.y
 

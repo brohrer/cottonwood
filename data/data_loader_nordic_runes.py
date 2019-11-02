@@ -34,4 +34,4 @@ def get_data_sets():
             index = np.random.choice(len(examples))
             yield examples[index]
 
-    return training_set, evaluation_set
+    return training_set(), evaluation_set()

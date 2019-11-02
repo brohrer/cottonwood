@@ -51,6 +51,14 @@ class SGD(GenericOptimizer):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
+    def __str__(self):
+        str_parts = [
+            "stochastic gradient descent",
+            f"learning_rate: {self.learning_rate}",
+            f"minibatch size: {self.minibatch_size}",
+        ]
+        return "\n".join(str_parts)
+
     def update(self, layer):
         de_dw_batch = self.update_minibatch(layer)
         if de_dw_batch is None:
@@ -71,6 +79,15 @@ class Momentum(GenericOptimizer):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.previous_adjustment = None
+
+    def __str__(self):
+        str_parts = [
+            "momentum",
+            f"learning_rate: {self.learning_rate}",
+            f"momentum amount: {self.momentum_amount}",
+            f"minibatch size: {self.minibatch_size}",
+        ]
+        return "\n".join(str_parts)
 
     def update(self, layer):
         de_dw_batch = self.update_minibatch(layer)
@@ -102,6 +119,16 @@ class Adam(GenericOptimizer):
         self.first_moment = 0
         self.second_moment = 0
         self.timestep = 0
+
+    def __str__(self):
+        str_parts = [
+            "adam",
+            f"learning_rate: {self.learning_rate}",
+            f"beta 1: {self.adam_beta_1}",
+            f"beta 2: {self.adam_beta_2}",
+            f"minibatch size: {self.minibatch_size}",
+        ]
+        return "\n".join(str_parts)
 
     def update(self, layer):
         self.timestep += 1

@@ -8,6 +8,10 @@ class Glorot(object):
     http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf
     """
     @staticmethod
+    def __str__():
+        return "Glorot"
+
+    @staticmethod
     def initialize(n_rows, n_cols):
         return np.random.normal(
             scale=np.sqrt(2 / (n_rows + n_cols)),
@@ -22,6 +26,10 @@ class He(object):
     Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun
     https://arxiv.org/abs/1502.01852
     """
+    @staticmethod
+    def __str__():
+        return "He"
+
     @staticmethod
     def initialize(n_rows, n_cols):
         return np.random.uniform(

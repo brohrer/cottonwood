@@ -43,19 +43,7 @@ class Printer(object):
         self.between_layer_scale = 0.8
         self.between_node_scale = 0.4
 
-        self.savedir = "nn_images"
-        try:
-            os.mkdir(self.savedir)
-        except Exception:
-            pass
-        try:
-            for filename in os.listdir(self.savedir):
-                if filename[-3:] == "png":
-                    os.remove(os.path.join(self.savedir, filename))
-        except Exception:
-            pass
-
-    def render(self, nn, inputs, name=""):
+    def render(self, nn, inputs, savedir=".", name=""):
         """
         Build a visualization of an image autoencoder neural network,
         piece by piece.
@@ -74,7 +62,7 @@ class Printer(object):
         self.add_output_image(fig, image_axes, nn, inputs)
         self.add_error_image(fig, image_axes, nn, inputs)
         self.add_layer_connections(ax_boss, image_axes, nn)
-        self.save_nn_viz(fig, name)
+        self.save_nn_viz(fig, savedir, name)
         plt.close()
 
     def create_background(self):
@@ -281,7 +269,8 @@ class Printer(object):
             )
             node_image = node_signature.reshape(
                 self.n_image_rows, self.n_image_cols)
-            node_image *= node_activities[i_node]
+            # node_image *= node_activities[i_node]
+            node_image *= np.sign(node_activities[i_node])
 
             node_image_bottom = (
                 layer_bottom + i_node * (
@@ -438,13 +427,18 @@ class Printer(object):
             weight = -1
         ax_boss.plot(x, y, color=conn_color, linewidth=weight, alpha=weight)
 
-    def save_nn_viz(self, fig, postfix="0"):
+    def save_nn_viz(self, fig, savedir, postfix="0"):
         """
         Generate a new filename for each step of the process.
         """
+        try:
+            os.mkdir(savedir)
+        except Exception:
+            pass
+
         base_name = "nn_viz_"
         filename = base_name + postfix + ".png"
-        filepath = os.path.join(self.savedir, filename)
+        filepath = os.path.join(savedir, filename)
         fig.savefig(
             filepath,
             edgecolor=fig.get_edgecolor(),
