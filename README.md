@@ -27,4 +27,26 @@ python3
 >>> import cottonwood.demo
 ```
 
+## Start playing
+
+If you'd like to experiment with ideas of your own, you'll want
+to clone the repository to your local machine and install it from there.
+
+```bash
+git clone https://github.com/brohrer/cottonwood.git
+python3 -m pip uninstall cottonwood
+python3 -m pip install -e cottonwood
+cd cottonwood
+git checkout v7
+```
+
+## Examples
+
+See what Cottonwood looks like in action.
+Feel free to use any of these as a template for a project of your own.
+They're MIT licensed.
+
+* [Compress images of the surface of Mars]
+(https://github.com/brohrer/cottonwood_martian_images)
+
 ## [Revision history](doc/revision_history.md)

@@ -8,6 +8,9 @@ class Uniform(object):
     def __init__(self, scale=.2):
         self.scale = scale
 
+    def __str__(self):
+        return f"Uniform distribution on [{-self.scale}, {self.scale}]"
+
     def initialize(self, n_rows, n_cols):
         return np.random.uniform(
             low=-self.scale,

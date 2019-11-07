@@ -12,6 +12,15 @@ class NoisyMomentum(GenericOptimizer):
         super().__init__(**kwargs)
         self.previous_adjustment = None
 
+    def __str__(self):
+        str_parts = [
+            "noisy momentum",
+            f"learning_rate: {self.learning_rate}",
+            f"momentum amount: {self.momentum_amount}",
+            f"minibatch size: {self.minibatch_size}",
+        ]
+        return "\n".join(str_parts)
+
     def update(self, layer):
         de_dw_batch = self.update_minibatch(layer)
         if de_dw_batch is None:
