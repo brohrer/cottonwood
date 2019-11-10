@@ -34,7 +34,6 @@ to clone the repository to your local machine and install it from there.
 
 ```bash
 git clone https://github.com/brohrer/cottonwood.git
-python3 -m pip uninstall cottonwood
 python3 -m pip install -e cottonwood --user --no-cache
 cd cottonwood
 git checkout v8
