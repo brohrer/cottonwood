@@ -45,7 +45,7 @@ See what Cottonwood looks like in action.
 Feel free to use any of these as a template for a project of your own.
 They're MIT licensed.
 
-* [Compress images of the surface of Mars]
-(https://github.com/brohrer/cottonwood_martian_images)
+* [Compress images of the surface of Mars](
+  https://github.com/brohrer/cottonwood_martian_images)
 
 ## [Revision history](doc/revision_history.md)
