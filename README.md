@@ -20,7 +20,7 @@ and
 ## Try it out
 
 ```bash
-python3 -m pip install "cottonwood==7"
+python3 -m pip install "cottonwood==8" --user
 python3
 ```
 ```python3
@@ -35,9 +35,9 @@ to clone the repository to your local machine and install it from there.
 ```bash
 git clone https://github.com/brohrer/cottonwood.git
 python3 -m pip uninstall cottonwood
-python3 -m pip install -e cottonwood
+python3 -m pip install -e cottonwood --user --no-cache
 cd cottonwood
-git checkout v7
+git checkout v8
 ```
 
 ## Examples

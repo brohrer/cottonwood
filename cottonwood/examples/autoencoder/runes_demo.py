@@ -1,15 +1,17 @@
 import numpy as np
-import data.data_loader_nordic_runes as dat
-from core.activation import Tanh
-from core.model import ANN
-from core.error_function import Sqr
-from core.initializers import Glorot
-from core.layers.dense import Dense
-from core.layers.range_normalization import RangeNormalization
-from core.layers.difference import Difference
-from core.optimizers import Momentum
-from core.regularization import L1, Limit
-from examples.autoencoder.autoencoder_viz import Printer
+import cottonwood.data.data_loader_nordic_runes as dat
+from cottonwood.core.activation import Tanh
+from cottonwood.core.model import ANN
+from cottonwood.core.error_function import Sqr
+# from cottonwood.core.initializers import Glorot
+# from cottonwood.core.initializers import He
+from cottonwood.core.layers.dense import Dense
+from cottonwood.core.layers.range_normalization import RangeNormalization
+from cottonwood.core.layers.difference import Difference
+from cottonwood.core.optimizers import Momentum
+from cottonwood.core.regularization import L1, Limit
+from cottonwood.examples.autoencoder.autoencoder_viz import Printer
+from cottonwood.experimental.initializers import Uniform
 
 
 def run():
@@ -29,7 +31,9 @@ def run():
         new_layer = Dense(
             n_nodes[i_layer],
             activation_function=Tanh,
-            initializer=Glorot(),
+            # initializer=Glorot(),
+            # initializer=He(),
+            initializer=Uniform(scale=3),
             previous_layer=layers[-1],
             optimizer=Momentum(),
         )

@@ -24,7 +24,7 @@ class ANN(object):
         self.i_iter = 0
         self.n_iter_train = int(8e5)
         self.n_iter_evaluate = int(2e5)
-        self.viz_interval = int(1e5)
+        self.viz_interval = int(1e4)
         self.report_interval = int(1e4)
         self.reporting_bin_size = int(1e3)
         self.report_min = -3

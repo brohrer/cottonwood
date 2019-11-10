@@ -1,5 +1,13 @@
 ## Cottonwood revision history
 
+
+### v8
+
+#### Bugfixes
+* `__str__()` methods added to `experiment` classes
+* Installation instructions updated
+* Installation dependencies on Numpy and Matplotlib added 
+
 ### v7
 
 Reporting added 
