@@ -48,4 +48,4 @@ They're MIT licensed.
 * [Compress images of the surface of Mars](
   https://github.com/brohrer/cottonwood_martian_images)
 
-## [Revision history](doc/revision_history.md)
+## [Revision history](cottonwood/doc/revision_history.md)
