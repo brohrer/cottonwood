@@ -12,7 +12,11 @@ class ANN(object):
         self,
         layers=None,
         error_function=None,
+        n_iter_train=8e5,
+        n_iter_evaluate=2e5,
+        reporting_bin_size=1e4,
         printer=None,
+        verbose=True,
     ):
         if error_function is None:
             self.error_function = Sqr()
@@ -22,31 +26,33 @@ class ANN(object):
         self.layers = layers
         self.error_history = []
         self.i_iter = 0
-        self.n_iter_train = int(8e5)
-        self.n_iter_evaluate = int(2e5)
-        self.viz_interval = int(1e4)
+        self.n_iter_train = int(n_iter_train)
+        self.n_iter_evaluate = int(n_iter_evaluate)
+        self.viz_interval = int(1e6)
         self.report_interval = int(1e4)
-        self.reporting_bin_size = int(1e3)
+        self.reporting_bin_size = int(reporting_bin_size)
         self.report_min = -3
         self.report_max = 0
         self.printer = printer
+        self.verbose = verbose
 
         time_dir = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         self.reports_path = os.path.join("reports", time_dir)
         self.performance_report_name = "performance_history.png"
         self.parameter_report_name = "model_parameters.txt"
 
-        # Ensure that subdirectories exist.
-        try:
-            os.mkdir("reports")
-        except Exception:
-            pass
-        try:
-            os.mkdir(self.reports_path)
-        except Exception:
-            pass
+        if self.verbose:
+            # Ensure that subdirectories exist.
+            try:
+                os.mkdir("reports")
+            except Exception:
+                pass
+            try:
+                os.mkdir(self.reports_path)
+            except Exception:
+                pass
 
-        self.report_parameters()
+            self.report_parameters()
 
     def __str__(self):
         str_parts = [
@@ -71,16 +77,17 @@ class ANN(object):
             self.error_history.append(error)
             self.backward_pass(error_d)
 
-            if (self.i_iter) % self.report_interval == 0:
+            if (self.i_iter) % self.report_interval == 0 and self.verbose:
                 self.report_performance()
 
-            if (self.i_iter) % self.viz_interval == 0:
+            if (self.i_iter) % self.viz_interval == 0 and self.verbose:
                 if self.printer is not None:
                     self.printer.render(
                         self,
                         x,
                         self.reports_path,
                         f"train_{self.i_iter:08d}")
+        return self.error_history
 
     def evaluate(self, evaluation_set):
         for _ in range(self.n_iter_evaluate):
@@ -90,16 +97,17 @@ class ANN(object):
             error = self.error_function.calc(y)
             self.error_history.append(error)
 
-            if (self.i_iter) % self.report_interval == 0:
+            if (self.i_iter) % self.report_interval == 0 and self.verbose:
                 self.report_performance()
 
-            if (self.i_iter) % self.viz_interval == 0:
+            if (self.i_iter) % self.viz_interval == 0 and self.verbose:
                 if self.printer is not None:
                     self.printer.render(
                         self,
                         x,
                         self.reports_path,
                         f"eval_{self.i_iter:08d}")
+        return self.error_history
 
     def forward_pass(
         self,
