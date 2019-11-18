@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 st.setup(
     name='cottonwood',
-    version='8.1',
+    version='9.1',
     description='A flexible machine learning framework',
     url='http://github.com/brohrer/cottonwood',
     download_url='https://github.com/brohrer/cottonwood/tags/',

@@ -17,27 +17,37 @@ you can get a step-by-step walkthrough in End-to-End Machine Learning
 and
 [Course 313](https://end-to-end-machine-learning.teachable.com/p/advanced-neural-network-methods/)
 
-## Try it out
-
-```bash
-python3 -m pip install "cottonwood==9" --user
-python3
-```
-```python3
->>> import cottonwood.demo
-```
-
-## Start playing
+## Installation
 
 If you'd like to experiment with ideas of your own, you'll want
 to clone the repository to your local machine and install it from there.
 
 ```bash
 git clone https://github.com/brohrer/cottonwood.git
-python3 -m pip install -e cottonwood --user --no-cache
+python3 -m pip install -e cottonwood
+```
+
+## Try it out
+
+```bash
+python3
+```
+```python3
+>>> import cottonwood.demo
+```
+
+## Versioning
+
+Cottonwood versions are **not** guaranteed backward compatible.
+You can select a particular version to work from.
+
+```
 cd cottonwood
 git checkout v9
 ```
+
+Check out the [Revision History](cottonwood/doc/revision_history.md)
+to see what features and bugfixes come with each release.
 
 ## Examples
 
@@ -47,5 +57,3 @@ They're MIT licensed.
 
 * [Compress images of the surface of Mars](
   https://github.com/brohrer/cottonwood_martian_images)
-
-## [Revision history](cottonwood/doc/revision_history.md)
