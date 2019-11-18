@@ -1,5 +1,11 @@
 ## Cottonwood revision history
 
+### v9
+
+#### Features
+Image processing tools added to toolbox:
+* Gamma compression / decompression
+* Color (RGB) to grayscale conversion
 
 ### v8
 
