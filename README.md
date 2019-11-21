@@ -36,6 +36,10 @@ python3
 >>> import cottonwood.demo
 ```
 
+Here is
+[the cheatsheet for pulling the relevant components](cottonwood/doc/cheatsheet.md)
+into your work.
+
 ## Versioning
 
 Cottonwood versions are **not** guaranteed backward compatible.

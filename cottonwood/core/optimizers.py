@@ -18,7 +18,7 @@ class GenericOptimizer(object):
         self.epsilon = kwargs.get(
             "epsilon", default_epsilon)
         self.learning_rate = kwargs.get(
-            "learning_rate ", default_learning_rate)
+            "learning_rate", default_learning_rate)
         self.minibatch_size = kwargs.get(
             "minibatch_size ", default_minibatch_size)
         self.momentum_amount = kwargs.get(

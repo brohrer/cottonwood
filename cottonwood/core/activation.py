@@ -3,20 +3,6 @@ import numpy as np
 # All of these need to be able to handle 2D numpy arrays as inputs.
 
 
-class Tanh(object):
-    @staticmethod
-    def __str__():
-        return "hyperbolic tangent"
-
-    @staticmethod
-    def calc(v):
-        return np.tanh(v)
-
-    @staticmethod
-    def calc_d(v):
-        return 1 - np.tanh(v) ** 2
-
-
 class Logistic(object):
     @staticmethod
     def __str__():
@@ -44,3 +30,19 @@ class ReLU(object):
         if v > 0:
             derivative = 1
         return derivative
+
+
+class Tanh(object):
+    @staticmethod
+    def __str__():
+        return "hyperbolic tangent"
+
+    @staticmethod
+    def calc(v):
+        return np.tanh(v)
+
+    @staticmethod
+    def calc_d(v):
+        return 1 - np.tanh(v) ** 2
+
+
