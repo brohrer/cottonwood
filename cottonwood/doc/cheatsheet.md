@@ -19,13 +19,13 @@ cottonwood.core.activation.ReLU
 cottonwood.core.activation.Tanh
 ```
 
-### [Error functions](https://github.com/brohrer/cottonwood/blob/main/cottonwood/core/error_functions.py)
+### [Error functions](https://github.com/brohrer/cottonwood/blob/main/cottonwood/core/error_function.py)
 ```python
 cottonwood.core.error_function.Abs
 cottonwood.core.error_function.Sqr
 ```
 
-### [Initializers(](https://github.com/brohrer/cottonwood/blob/main/cottonwood/core/initializers.py)
+### [Initializers](https://github.com/brohrer/cottonwood/blob/main/cottonwood/core/initializers.py)
 ```python
 cottonwood.core.initializers.Glorot
 cottonwood.core.initializers.He
@@ -39,7 +39,7 @@ cottonwood.core.regularization.L2
 ```
 
 
-### Optimizers](https://github.com/brohrer/cottonwood/blob/main/cottonwood/core/error_functions.py)
+### [Optimizers](https://github.com/brohrer/cottonwood/blob/main/cottonwood/core/optimizers.py)
 ```python
 cottonwood.core.optimizers.Adam
 cottonwood.core.optimizers.Momentum
