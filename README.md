@@ -1,6 +1,6 @@
 # The Cottonwood Machine Learning Framework
 
-Cottonwood is built to as flexible as possible, top to bottom.
+Cottonwood is built to be as flexible as possible, top to bottom.
 It's designed to minimize the iteration time when running experiments
 and testing ideas. It's meant to be tweaked. Fork it. Add to it. Customize it
 to solve the problem at hand. For more of the thought behind it, read

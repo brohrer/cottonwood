@@ -46,3 +46,15 @@ class Tanh(object):
         return 1 - np.tanh(v) ** 2
 
 
+class Sigmoid(object):
+    @staticmethod
+    def __str__():
+        return "sigmoid activation"
+
+    @staticmethod
+    def calc(v):
+        return (1 / (1 + np.exp(np.negative(v))))
+
+    @staticmethod
+    def calc_d(v):
+        return Sigmoid.calc(v) * (1 - Sigmoid.calc(v))
