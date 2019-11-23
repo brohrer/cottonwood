@@ -6,6 +6,8 @@ and testing ideas. It's meant to be tweaked. Fork it. Add to it. Customize it
 to solve the problem at hand. For more of the thought behind it, read
 the post "
 [Why another framework?](https://end-to-end-machine-learning.teachable.com/blog/171633/cottonwood-flexible-neural-network-framework)
+and
+[Why did you name it that?](https://end-to-end-machine-learning.teachable.com/blog/193739/why-is-it-called-cottonwood)
 
 This code is always evolving. I recommend referencing a specific tag
 whenever you use it in a project. Tags are labeled v1, v2, etc. and
@@ -61,3 +63,7 @@ They're MIT licensed.
 
 * [Compress images of the surface of Mars](
   https://github.com/brohrer/cottonwood_martian_images)
+
+## Contribute to the project
+
+[Here are some ideas to get you started.](cottonwood/doc/contributing.md)
