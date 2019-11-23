@@ -1,4 +1,4 @@
- # Contributing
+# Contributing
 
 Feeling inspired to contribute to the Cottonwood community? Fantastic!
 
@@ -47,10 +47,12 @@ out and would like to share it around, `experimental` is the place for it.
 The workflow for submitting code that gives the clearest paper trail
 is
 
-1) open an issue describing what you plan to submit and why.
-Here is a stellar example,
+1) open an issue describing what you plan to submit and why
+([here is a stellar example](https://github.com/brohrer/cottonwood/issues/2)),
 
-2) write the code and test it in an example,
+2) write the code,
+
+3) test it in an example,
 
 3) submit your changes in a pull request. That will give us a chance
 to look it over to together and discuss it if necessary,
