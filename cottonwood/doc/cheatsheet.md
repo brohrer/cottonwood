@@ -29,6 +29,7 @@ cottonwood.core.error_function.Sqr
 ```python
 cottonwood.core.initializers.Glorot
 cottonwood.core.initializers.He
+cottonwood.experimental.Uniform
 ```
 
 ### [Regularizers](https://github.com/brohrer/cottonwood/blob/main/cottonwood/core/regularization.py)
