@@ -7,12 +7,15 @@ class Logistic(object):
     @staticmethod
     def __str__():
         return "logistic"
-
-    def calc(self, v):
+    
+    @staticmethod
+    def calc(v):
         return 1 / (1 + np.exp(-v))
 
-    def calc_d(self, v):
-        return self.calc(v) * (1 - self.calc(v))
+    @staticmethod
+    def calc_d(v):
+        logistic = 1 / (1 + np.exp(-v))
+        return logistic * (1 - logistic)
 
 
 class ReLU(object):
