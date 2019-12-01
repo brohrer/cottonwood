@@ -14,6 +14,7 @@ class ANN(object):
         error_function=None,
         n_iter_train=8e5,
         n_iter_evaluate=2e5,
+        n_iter_evaluate_hyperparameters=5,
         reporting_bin_size=1e4,
         printer=None,
         verbose=True,
@@ -28,6 +29,8 @@ class ANN(object):
         self.i_iter = 0
         self.n_iter_train = int(n_iter_train)
         self.n_iter_evaluate = int(n_iter_evaluate)
+        self.n_iter_evaluate_hyperparameters = int(
+            n_iter_evaluate_hyperparameters)
         self.viz_interval = int(1e6)
         self.report_interval = int(1e4)
         self.reporting_bin_size = int(reporting_bin_size)
@@ -109,6 +112,23 @@ class ANN(object):
                         f"eval_{self.i_iter:08d}")
         return self.error_history
 
+    def evaluate_hyperparameters(self, training_set, tuning_set):
+        error_means = []
+        for i_run in range(self.n_iter_evaluate_hyperparameters):
+            time_str = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+            print(
+                f"Running hyperparameter evaluation iteration {i_run + 1}"
+                + f" of {self.n_iter_evaluate_hyperparameters} at {time_str}"
+            )
+            error_history_train = self.train(training_set)
+            n_train = len(error_history_train)
+            error_history = self.evaluate(tuning_set)
+            error_history_evaluate = error_history[n_train:]
+            log_errors = np.log10(np.array(error_history_evaluate) + 1e-10)
+            error_means.append(np.mean(log_errors))
+        error_means.sort()
+        return np.median(error_means)
+
     def forward_pass(
         self,
         x,
@@ -181,7 +201,11 @@ class ANN(object):
         ymax = np.maximum(self.report_max, np.max(error_history))
         fig = plt.figure()
         ax = plt.gca()
-        ax.plot(error_history)
+        ax.plot(
+            range(len(error_history)) + 1,
+            error_history,
+            color="blue",
+        )
         ax.set_xlabel(f"x{self.reporting_bin_size} iterations")
         ax.set_ylabel("log error")
         ax.set_ylim(ymin, ymax)

@@ -26,9 +26,8 @@ class ReLU(object):
 
     @staticmethod
     def calc_d(v):
-        derivative = 0
-        if v > 0:
-            derivative = 1
+        derivative = np.zeros(v.shape)
+        derivative[np.where(v > 0)] = 1
         return derivative
 
 
