@@ -7,7 +7,7 @@ class Logistic(object):
     @staticmethod
     def __str__():
         return "logistic"
-    
+
     @staticmethod
     def calc(v):
         return 1 / (1 + np.exp(-v))
@@ -41,16 +41,21 @@ class Sigmoid(Logistic):
 
 
 class Tanh(object):
+    def __init__(self):
+        # Including this class attribute lets Tanh re-use its results.
+        # Caching the result in this way speeds up the derivative
+        # calculation on the bakward pass.
+        self.last_calc_result = None
+
     @staticmethod
     def __str__():
         return "hyperbolic tangent"
 
-    @staticmethod
-    def calc(v):
-        return np.tanh(v)
+    def calc(self, v):
+        self.last_calc_result = np.tanh(v)
+        return self.last_calc_result
 
-    @staticmethod
-    def calc_d(v):
-        return 1 - np.tanh(v) ** 2
+    def calc_d(self, v):
+        return 1 - self.last_calc_result ** 2
 
 

@@ -88,11 +88,14 @@ class Dense(GenericLayer):
         else:
             dropout_rate = self.dropout_rate
 
-        self.i_dropout = np.zeros(self.x.size, dtype=bool)
-        self.i_dropout[np.where(
-            np.random.uniform(size=self.x.size) < dropout_rate)] = True
-        self.x[:, self.i_dropout] = 0
-        self.x[:, np.logical_not(self.i_dropout)] *= 1 / (1 - dropout_rate)
+        if dropout_rate > 0:
+            self.i_dropout = np.zeros(self.x.size, dtype=bool)
+            self.i_dropout[np.where(
+                np.random.uniform(size=self.x.size) < dropout_rate)] = True
+            self.x[:, self.i_dropout] = 0
+            self.x[:, np.logical_not(self.i_dropout)] *= 1 / (1 - dropout_rate)
+        else:
+            self.i_dropout = None
 
         bias = np.ones((1, 1))
         x_w_bias = np.concatenate((self.x, bias), axis=1)
@@ -123,9 +126,11 @@ class Dense(GenericLayer):
             regularizer.post_optim_update(self)
 
         self.de_dx = (self.de_dy * dy_dv) @ dv_dx
+
         # Remove the dropped-out inputs from this run.
         de_dx_no_bias = self.de_dx[:, :-1]
-        de_dx_no_bias[:, self.i_dropout] = 0
+        if self.i_dropout is not None:
+            de_dx_no_bias[:, self.i_dropout] = 0
 
         # Remove the bias node from the gradient vector.
         self.previous_layer.de_dy += de_dx_no_bias

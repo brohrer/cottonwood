@@ -36,10 +36,16 @@ class GenericOptimizer(object):
         self.i_minibatch += 1
 
         de_dw_batch = None
-        if self.i_minibatch >= self.minibatch_size:
-            de_dw_batch = self.de_dw_total / self.minibatch_size
+        if self.minibatch_size > 1:
+            if self.i_minibatch >= self.minibatch_size:
+                de_dw_batch = self.de_dw_total / self.minibatch_size
+                self.de_dw_total = None
+                self.i_minibatch = 0
+        else:
+            de_dw_batch = self.de_dw_total
             self.de_dw_total = None
             self.i_minibatch = 0
+
 
         return de_dw_batch
 
