@@ -8,14 +8,12 @@ class Logistic(object):
     def __str__():
         return "logistic"
 
-    @staticmethod
-    def calc(v):
-        return 1 / (1 + np.exp(-v))
+    def calc(self, v):
+        self.calc_fwd = 1 / (1 + np.exp(-v))
+        return self.calc_fwd
 
-    @staticmethod
-    def calc_d(v):
-        logistic = 1 / (1 + np.exp(-v))
-        return logistic * (1 - logistic)
+    def calc_d(self, v):
+        return self.calc_fwd * (1 - self.calc_fwd)
 
 
 class ReLU(object):
@@ -45,17 +43,15 @@ class Tanh(object):
         # Including this class attribute lets Tanh re-use its results.
         # Caching the result in this way speeds up the derivative
         # calculation on the bakward pass.
-        self.last_calc_result = None
+        self.calc_fwd = None
 
     @staticmethod
     def __str__():
         return "hyperbolic tangent"
 
     def calc(self, v):
-        self.last_calc_result = np.tanh(v)
-        return self.last_calc_result
+        self.calc_fwd = np.tanh(v)
+        return self.calc_fwd
 
     def calc_d(self, v):
-        return 1 - self.last_calc_result ** 2
-
-
+        return 1 - self.calc_fwd ** 2
