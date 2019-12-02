@@ -4,8 +4,13 @@ import numpy as np
 
 
 class Logistic(object):
-    @staticmethod
-    def __str__():
+    def __init__(self):
+        # Including this class attribute lets Logistic re-use its results.
+        # Caching the result in this way speeds up the derivative
+        # calculation on the backward pass.
+        self.calc_fwd = None
+
+    def __str__(self):
         return "logistic"
 
     def calc(self, v):
@@ -14,6 +19,11 @@ class Logistic(object):
 
     def calc_d(self, v):
         return self.calc_fwd * (1 - self.calc_fwd)
+
+
+class Sigmoid(Logistic):
+    def __str__(self):
+        return "sigmoid"
 
 
 class ReLU(object):
@@ -32,21 +42,14 @@ class ReLU(object):
         return derivative
 
 
-class Sigmoid(Logistic):
-    @staticmethod
-    def __str__():
-        return "sigmoid"
-
-
 class Tanh(object):
     def __init__(self):
         # Including this class attribute lets Tanh re-use its results.
         # Caching the result in this way speeds up the derivative
-        # calculation on the bakward pass.
+        # calculation on the backward pass.
         self.calc_fwd = None
 
-    @staticmethod
-    def __str__():
+    def __str__(self):
         return "hyperbolic tangent"
 
     def calc(self, v):
