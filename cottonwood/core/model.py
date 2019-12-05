@@ -202,7 +202,7 @@ class ANN(object):
         fig = plt.figure()
         ax = plt.gca()
         ax.plot(
-            range(len(error_history)) + 1,
+            np.arange(len(error_history)) + 1,
             error_history,
             color="blue",
         )

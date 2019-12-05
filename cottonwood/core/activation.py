@@ -10,7 +10,8 @@ class Logistic(object):
         # calculation on the backward pass.
         self.calc_fwd = None
 
-    def __str__(self):
+    @staticmethod
+    def __str__():
         return "logistic"
 
     def calc(self, v):
@@ -49,7 +50,8 @@ class Tanh(object):
         # calculation on the backward pass.
         self.calc_fwd = None
 
-    def __str__(self):
+    @staticmethod
+    def __str__():
         return "hyperbolic tangent"
 
     def calc(self, v):

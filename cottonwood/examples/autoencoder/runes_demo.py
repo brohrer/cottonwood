@@ -30,7 +30,7 @@ def run():
     for i_layer in range(len(n_nodes)):
         new_layer = Dense(
             n_nodes[i_layer],
-            activation_function=Tanh,
+            activation_function=Tanh(),
             # initializer=Glorot(),
             # initializer=He(),
             initializer=Uniform(scale=3),
