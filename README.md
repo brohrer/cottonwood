@@ -21,7 +21,8 @@ and
 
 ## Installation
 
-If you'd like to experiment with ideas of your own, you'll want
+Whether you want to pull Cottonwood into another project, 
+or experiment with ideas of your own, you'll want
 to clone the repository to your local machine and install it from there.
 
 ```bash
