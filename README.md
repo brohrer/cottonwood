@@ -21,14 +21,8 @@ and
 
 ## Installation
 
-If you want to pull Cottonwood into another project, but don't intend to modify it,
-you can install it at the command line with this.
-
-```bash
-python3 -m pip install git+https://github.com/brohrer/cottonwood.git --user --no-cache
-```
-
-If you'd like to experiment with ideas of your own, you'll want
+Whether you want to pull Cottonwood into another project, 
+or experiment with ideas of your own, you'll want
 to clone the repository to your local machine and install it from there.
 
 ```bash
