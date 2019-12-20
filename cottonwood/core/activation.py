@@ -46,7 +46,7 @@ class ReLU(object):
 class Tanh(object):
     def __init__(self):
         # Including this class attribute lets Tanh re-use its results.
-        # Caching the result in this way speeds up the derivative
+        # Cacheing the result in this way speeds up the derivative
         # calculation on the backward pass.
         self.calc_fwd = None
 

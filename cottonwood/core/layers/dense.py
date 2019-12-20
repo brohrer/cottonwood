@@ -129,6 +129,7 @@ class Dense(GenericLayer):
 
         # Remove the dropped-out inputs from this run.
         de_dx_no_bias = self.de_dx[:, :-1]
+
         if self.i_dropout is not None:
             de_dx_no_bias[:, self.i_dropout] = 0
 
