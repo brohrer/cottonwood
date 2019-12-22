@@ -116,10 +116,11 @@ class ANN(object):
         error_means = []
         for i_run in range(self.n_iter_evaluate_hyperparameters):
             time_str = dt.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-            print(
-                f"Running hyperparameter evaluation iteration {i_run + 1}"
-                + f" of {self.n_iter_evaluate_hyperparameters} at {time_str}"
-            )
+            if self.verbose:
+                print(
+                    f"Running hyperparameter evaluation iteration {i_run + 1}"
+                    + f" of {self.n_iter_evaluate_hyperparameters} at {time_str}"
+                )
             error_history_train = self.train(training_set)
             n_train = len(error_history_train)
             error_history = self.evaluate(tuning_set)
