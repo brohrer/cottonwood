@@ -1,3 +1,29 @@
+# WE'VE MOVED
+
+### This repository is now being hosted on GitLab's servers.
+Check it out at [https://gitlab.com/brohrer/cottonwood](https://gitlab.com/brohrer/cottonwood).
+Install from there. Update from there.
+
+To make the switch on your local machine command line run
+
+git remote set-url origin git@github.com:brohrer/cottonwood.git
+
+or
+
+git remote set-url origin https://gitlab.com/brohrer/cottonwood.git
+
+depending on which protocol you're using.
+
+This repo is being deprecated and will no longer be updated. BTW GitLab is pretty intuitive if you're already familiar with GitHub. [Check it out.](https://gitlab.com/)
+
+--
+
+--
+
+--
+
+--
+
 # The Cottonwood Machine Learning Framework
 
 Cottonwood is built to be as flexible as possible, top to bottom.
