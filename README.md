@@ -1,6 +1,6 @@
 # WE'VE MOVED
 
-### This repository is now being hosted on GitLab's servers.
+### [This repository is now being hosted on GitLab's servers.](https://gitlab.com/brohrer/cottonwood)
 Check it out at [https://gitlab.com/brohrer/cottonwood](https://gitlab.com/brohrer/cottonwood).
 Install from there. Update from there.
 
