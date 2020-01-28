@@ -15,9 +15,11 @@ class ANN(object):
         n_iter_train=8e5,
         n_iter_evaluate=2e5,
         n_iter_evaluate_hyperparameters=5,
-        reporting_bin_size=1e4,
         printer=None,
         verbose=True,
+        reporting_bin_size=1e3,
+        report_interval=1e4,
+        viz_interval=1e6,
     ):
         if error_function is None:
             self.error_function = Sqr()
@@ -31,8 +33,8 @@ class ANN(object):
         self.n_iter_evaluate = int(n_iter_evaluate)
         self.n_iter_evaluate_hyperparameters = int(
             n_iter_evaluate_hyperparameters)
-        self.viz_interval = int(1e6)
-        self.report_interval = int(1e4)
+        self.viz_interval = int(viz_interval)
+        self.report_interval = int(report_interval)
         self.reporting_bin_size = int(reporting_bin_size)
         self.report_min = -3
         self.report_max = 0
@@ -128,7 +130,7 @@ class ANN(object):
             log_errors = np.log10(np.array(error_history_evaluate) + 1e-10)
             error_means.append(np.mean(log_errors))
         error_means.sort()
-        return np.median(error_means)
+        return np.median(error_means), error_means[-1]
 
     def forward_pass(
         self,
@@ -207,7 +209,7 @@ class ANN(object):
             error_history,
             color="blue",
         )
-        ax.set_xlabel(f"x{self.reporting_bin_size} iterations")
+        ax.set_xlabel(f"x{self.reporting_bin_size:,} iterations")
         ax.set_ylabel("log error")
         ax.set_ylim(ymin, ymax)
         ax.grid()

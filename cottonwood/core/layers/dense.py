@@ -1,6 +1,6 @@
 import numpy as np
 from cottonwood.core.activation import Tanh
-from cottonwood.core.initializers import Glorot
+from cottonwood.core.initializers import LSUV
 from cottonwood.core.layers.generic_layer import GenericLayer
 from cottonwood.core.optimizers import SGD
 import cottonwood.core.toolbox as tb
@@ -28,7 +28,7 @@ class Dense(GenericLayer):
             self.activation_function = activation_function
 
         if initializer is None:
-            self.initializer = Glorot()
+            self.initializer = LSUV()
         else:
             self.initializer = initializer
 

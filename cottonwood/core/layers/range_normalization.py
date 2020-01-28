@@ -42,12 +42,8 @@ class RangeNormalization(GenericLayer):
         if self.previous_layer is not None:
             self.previous_layer.de_dy += self.de_dx
 
-    def denormalize(self, transformed_values):
+    def denormalize(self, vals):
         """
         In case you ever need to reverse the normalization process.
         """
-        min_val = self.expected_range[0]
-        max_val = self.expected_range[1]
-        scale_factor = 2 / (max_val - min_val)
-        offset_factor = min_val - 1
-        return transformed_values / scale_factor - offset_factor
+        return self.scale_factor * (vals + .5) + self.offset_factor
