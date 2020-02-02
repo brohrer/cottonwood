@@ -10,7 +10,7 @@ git remote set-url origin https://gitlab.com/brohrer/cottonwood.git
 
 or
 
-git remote set-url origin git@github.com:brohrer/cottonwood.git
+git remote set-url origin git@gitlab.com:brohrer/cottonwood.git
 
 depending on which protocol you're using.
 
