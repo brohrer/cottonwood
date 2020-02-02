@@ -10,6 +10,7 @@ class Dense(GenericLayer):
     def __init__(
         self,
         n_outputs,
+        m_inputs=None,
         activation_function=None,
         dropout_rate=0,
         initializer=None,
@@ -17,7 +18,10 @@ class Dense(GenericLayer):
         optimizer=None,
     ):
         self.previous_layer = previous_layer
-        self.m_inputs = self.previous_layer.y.size
+        if m_inputs is not None:
+            self.m_inputs = m_inputs
+        else:
+            self.m_inputs = self.previous_layer.y.size
         self.n_outputs = int(n_outputs)
         self.activation_function = activation_function
         self.dropout_rate = dropout_rate

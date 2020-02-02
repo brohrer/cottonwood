@@ -14,10 +14,11 @@ whenever you use it in a project. Tags are labeled v1, v2, etc. and
 the code attached to each one won't change.
 
 If you want to follow along with the construction process for Cottonwood,
-you can get a step-by-step walkthrough in End-to-End Machine Learning
-[Course 312](https://end-to-end-machine-learning.teachable.com/p/write-a-neural-network-framework/)
+you can get a step-by-step walkthrough in the e2eML sequence
+[Course 312](https://end-to-end-machine-learning.teachable.com/p/write-a-neural-network-framework/),
+[Course 313](https://end-to-end-machine-learning.teachable.com/p/advanced-neural-network-methods/),
 and
-[Course 313](https://end-to-end-machine-learning.teachable.com/p/advanced-neural-network-methods/)
+[Course 314](https://end-to-end-machine-learning.teachable.com/p/314-neural-network-optimization/).
 
 ## Installation
 
@@ -50,11 +51,8 @@ You can select a particular version to work from.
 
 ```
 cd cottonwood
-git checkout v9
+git checkout v14
 ```
-
-Check out the [Revision History](cottonwood/doc/revision_history.md)
-to see what features and bugfixes come with each release.
 
 ## Examples
 
